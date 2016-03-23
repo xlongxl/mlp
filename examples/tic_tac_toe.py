@@ -31,14 +31,14 @@ targets = np.zeros((n_instances, n_classes))
 for class_, target in zip(classes, targets):
     target[class_] = 1.0
 
-nn = mlp.MLP(n_attributes + 1, 6, n_classes)
+nn = mlp.MLP([n_attributes + 1, 6, 6, n_classes], debug=True)
 
 kfolds = cross_validation.KFold(n_instances, n_folds=5, shuffle=True)
 for train_indices, test_indices in kfolds:
     train_examples = examples[train_indices]
     train_targets = targets[train_indices]
 
-    nn.fit(train_examples, train_targets, n_epochs=100, learning_rate=0.1)
+    nn.fit(train_examples, train_targets, n_epochs=1000, learning_rate=0.05)
 
     test_examples = examples[test_indices]
     test_targets = targets[test_indices]
