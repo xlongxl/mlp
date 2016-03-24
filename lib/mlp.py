@@ -57,15 +57,20 @@ class MLP:
         for weight in self.W_init:
             self.W.append(weight.copy())
 
+        costs = []
         for i in range(n_epochs):
             cost = 0.0
             for (example, target) in zip(examples, targets):
                 self.forward_pass(example)
                 self.backward_pass(target, learning_rate)
                 cost += self.cost(self.A[-1], target, scale=0.5)
+            costs.append(cost)
+
             if self.debug and i % (n_epochs / 100) == 0:
-                print "Epoch", i
-                print cost
+                print "Epoch:", i
+                print "Cost:", cost
+
+        return costs
 
     def predict(self, example):
         return np.argmax(self.forward_pass(example))
